@@ -88,8 +88,8 @@ module VcoWorkflows
     end
 
     # Get the log for a specific execution
-    # @param [String] workflow_id
-    # @param [String] execution_id
+    # @param [String] workflow_id Workflow GUID
+    # @param [String] execution_id Workflow execution ID
     # @return [String] JSON log document
     def get_log(workflow_id, execution_id)
       path = "/workflows/#{workflow_id}/executions/#{execution_id}/logs/"
