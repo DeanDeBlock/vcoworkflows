@@ -1,5 +1,7 @@
 # Vcoworkflows
 
+[![Join the chat at https://gitter.im/activenetwork-automation/vcoworkflows](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/activenetwork-automation/vcoworkflows?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/activenetwork-automation/vcoworkflows.svg?branch=master)][travis]
 [![Dependency Status](https://gemnasium.com/activenetwork-automation/vcoworkflows.svg)][gemnasium]
 [![Coverage Status](https://coveralls.io/repos/activenetwork-automation/vcoworkflows/badge.png?branch=master)][coveralls]
