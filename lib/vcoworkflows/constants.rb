@@ -79,7 +79,6 @@ module VcoWorkflows
     username_unset: 'No username was specified, either by $VCO_USER or --username',
     password_unset: 'No password was specified, either by $VCO_PASSWD or --password'
   }
-  ERR[:ssl_verify] = 'Error: unable to verify SSL Certificate for URL'
-  ERR[:ssl_verify] += "\nIf you need to disable SSL verification, please use --no-verify-ssl"
+
   # rubocop:enable LineLength
 end

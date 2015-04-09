@@ -9,7 +9,6 @@
 /spec/reports/
 /tmp/
 *.bundle
-/vendor/
 *.so
 *.o
 *.a
