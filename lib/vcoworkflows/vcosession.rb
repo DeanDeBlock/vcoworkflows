@@ -31,7 +31,11 @@ module VcoWorkflows
     # @return [String] JSON response body
     def get(endpoint, headers = {})
       headers = { accept: :json }.merge(headers)
-      @rest_resource[endpoint].get headers
+      begin
+        @rest_resource[endpoint].get headers
+      rescue RestClient::SSLCertificateNotVerified => ssl_verify_error
+        ssl_verify_fail(ssl_verify_error)
+      end
     end
 
     # Perform a REST POST operation against the specified endpoint with the
@@ -43,7 +47,22 @@ module VcoWorkflows
     # @return [String] JSON response body
     def post(endpoint, body, headers = {})
       headers = { accept: :json, content_type: :json }.merge(headers)
-      @rest_resource[endpoint].post body, headers
+      begin
+        @rest_resource[endpoint].post body, headers
+      rescue RestClient::SSLCertificateNotVerified => ssl_verify_error
+        ssl_verify_fail(ssl_verify_error)
+      end
+    end
+
+    # Fail gracefully with a useful error message if SSL Verification fails
+    #
+    # @param [RestClient::SSLCertificatNotVerified] error
+    def ssl_verify_fail(ssl_verify_error = nil)
+      msg = ERR[:ssl_verify]
+      msg += "\nGiven URL: #{@rest_resource.url}\n"
+      msg += "Error info: #{ssl_verify_error.message}\n"
+      warn(msg)
+      exit(1)
     end
   end
 end
