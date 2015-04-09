@@ -1,6 +1,4 @@
 [![Stories in Ready](https://badge.waffle.io/activenetwork-automation/vcoworkflows.png?label=ready&title=Ready)](https://waffle.io/activenetwork-automation/vcoworkflows)
-# Vcoworkflows
-
 [![Join the chat at https://gitter.im/activenetwork-automation/vcoworkflows](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/activenetwork-automation/vcoworkflows?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![Build Status](https://travis-ci.org/activenetwork-automation/vcoworkflows.svg?branch=master)][travis]
@@ -12,6 +10,8 @@
 [gemnasium]: https://gemnasium.com/activenetwork-automation/vcoworkflows
 [coveralls]: https://coveralls.io/r/activenetwork-automation/vcoworkflows
 [inch]: http://inch-ci.org/github/activenetwork-automation/vcoworkflows
+
+# Vcoworkflows
 
 `vcoworkflows` provides a Ruby API for finding and executing vCenter
 Orchestrator workflows. You can search for a workflow either by name or
