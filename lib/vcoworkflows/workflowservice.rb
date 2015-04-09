@@ -88,8 +88,8 @@ module VcoWorkflows
     end
 
     # Get the log for a specific execution
-    # @param [String] workflow_id
-    # @param [String] execution_id
+    # @param [String] workflow_id Workflow GUID
+    # @param [String] execution_id Workflow execution ID
     # @return [String] JSON log document
     def get_log(workflow_id, execution_id)
       path = "/workflows/#{workflow_id}/executions/#{execution_id}/logs/"
@@ -105,7 +105,9 @@ module VcoWorkflows
       response = @session.post(path, parameter_json)
       # Execution ID is the final component in the Location header URL, so
       # chop off the front, then pull off any trailing /
-      response.headers[:location].gsub(%r{^.*/executions/}, '').gsub(/\/$/, '')
+      # rubocop:disable LineLength
+      response.headers[:location].gsub(%r{^.*/executions/}, '').gsub(%r{\/$}, '')
+      # rubocop:enable LineLength
     end
   end
 end

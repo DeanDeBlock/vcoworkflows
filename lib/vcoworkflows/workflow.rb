@@ -106,10 +106,12 @@ module VcoWorkflows
 
       # Set up the attributes if they exist in the data json,
       # otherwise nil them
+      # rubocop:disable SpaceAroundOperators
       @id          = workflow_data.key?('id')          ? workflow_data['id']          : nil
       @name        = workflow_data.key?('name')        ? workflow_data['name']        : nil
       @version     = workflow_data.key?('version')     ? workflow_data['version']     : nil
       @description = workflow_data.key?('description') ? workflow_data['description'] : nil
+      # rubocop:enable SpaceAroundOperators
 
       # Process the input parameters
       if workflow_data.key?('input-parameters')

@@ -37,9 +37,9 @@ module VcoWorkflows
       @name = name
 
       case type
-      when /\//
-        @type = type.gsub(/\/.*$/, '')
-        @subtype = type.gsub(/^.*\//, '')
+      when %r{\/}
+        @type = type.gsub(%r{\/.*$}, '')
+        @subtype = type.gsub(%r{^.*\/}, '')
       else
         @type = type
         @subtype = nil
