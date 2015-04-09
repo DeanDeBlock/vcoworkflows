@@ -105,7 +105,9 @@ module VcoWorkflows
       response = @session.post(path, parameter_json)
       # Execution ID is the final component in the Location header URL, so
       # chop off the front, then pull off any trailing /
-      response.headers[:location].gsub(%r{^.*/executions/}, '').gsub(/\/$/, '')
+      # rubocop:disable LineLength
+      response.headers[:location].gsub(%r{^.*/executions/}, '').gsub(%r{\/$}, '')
+      # rubocop:enable LineLength
     end
   end
 end

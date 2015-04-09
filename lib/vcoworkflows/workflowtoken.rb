@@ -81,6 +81,7 @@ module VcoWorkflows
 
       token = JSON.parse(@json_content)
 
+      # rubocop:disable SpaceAroundOperators
       @id                 = token.key?('id')                        ? token['id']                        : nil
       @name               = token.key?('name')                      ? token['name']                      : nil
       @state              = token.key?('state')                     ? token['state']                     : nil
@@ -92,6 +93,7 @@ module VcoWorkflows
       @current_item_state = token.key?('current-item-state')        ? token['current-item-state']        : nil
       @global_state       = token.key?('global-state')              ? token['global-state']              : nil
       @content_exception  = token.key?('content-exeption')          ? token['content-exception']         : nil
+      # rubocop:enable SpaceAroundOperators
 
       if token.key?('input-parameters')
         @input_parameters = VcoWorkflows::Workflow.parse_parameters(token['input-parameters'])
