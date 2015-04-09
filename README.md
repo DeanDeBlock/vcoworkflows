@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/activenetwork-automation/vcoworkflows.png?label=ready&title=Ready)](https://waffle.io/activenetwork-automation/vcoworkflows)
 # Vcoworkflows
 
 [![Build Status](https://travis-ci.org/activenetwork-automation/vcoworkflows.svg?branch=master)][travis]
