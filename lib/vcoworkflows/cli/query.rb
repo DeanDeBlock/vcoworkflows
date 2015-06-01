@@ -1,5 +1,4 @@
 require 'vcoworkflows'
-require_relative 'auth'
 require 'thor/group'
 
 # rubocop:disable MethodLength, LineLength
@@ -35,7 +34,10 @@ module VcoWorkflows
       # Process the subcommand
       # rubocop:disable CyclomaticComplexity, PerceivedComplexity
       def query
-        auth = VcoWorkflows::Cli::Auth.new(username: options[:username], password: options[:password])
+        config = VcoWorkflows::Config.new(url:        options[:server],
+                                          username:   options[:username],
+                                          password:   options[:password],
+                                          verify_ssl: options[:verify_ssl])
 
         if options[:dry_run]
           puts "\nQuerying against vCO REST endpoint:\n  #{options[:server]}"
@@ -47,11 +49,8 @@ module VcoWorkflows
         # Get the workflow
         puts "\nRetrieving workflow '#{workflow}' ..."
         wf = VcoWorkflows::Workflow.new(workflow,
-                                        url: options[:server],
-                                        username: auth.username,
-                                        password: auth.password,
-                                        verify_ssl: options[:verify_ssl],
-                                        id: options[:id])
+                                        id:     options[:id],
+                                        config: config)
 
         puts ''
         if options[:execution_id]
