@@ -9,6 +9,15 @@ notification :growl, sticky:true
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
+guard :rubocop do
+  watch(%r{.+\.rb$})
+  watch(%r{bin/.+\.rb$})
+  watch(%r{lib/vcoworkflows/.+\.rb$})
+  watch(%r{spec/.+\.rb$})
+  watch(%r{spec/vcoworkflows/.+_spec\.rb$})
+  watch(%r{(?:.+/)?\.rubocop\.yml$}) { |m| File.direname(m[0]) }
+end
+
 guard :rspec, cmd: "bundle exec rspec" do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
@@ -24,15 +33,6 @@ guard :rspec, cmd: "bundle exec rspec" do
   # Ruby files
   ruby = dsl.ruby
   dsl.watch_spec_files_for(ruby.lib_files)
-end
-
-guard :rubocop do
-  watch(%r{.+\.rb$})
-  watch(%r{bin/.+\.rb$})
-  watch(%r{lib/vcoworkflows/.+\.rb$})
-  watch(%r{spec/.+\.rb$})
-  watch(%r{spec/vcoworkflows/.+_spec\.rb$})
-  watch(%r{(?:.+/)?\.rubocop\.yml$}) { |m| File.direname(m[0]) }
 end
 
 guard 'yard' do
