@@ -29,27 +29,24 @@ module VcoWorkflows
     # @return [String] workflow description
     attr_reader :description
 
-    # Workflow Input Parameters
-    # @return [Hash<VcoWorkflows::WorkflowParameter>] Hash of
-    #   WorkflowParameter objects, keyed by name
+    # Workflow Input Parameters: Hash of WorkflowParameters, keyed by name
+    # @return [Hash<VcoWorkflows::WorkflowParameter>]
     attr_reader :input_parameters
 
-    # Workflow Output Parameters
-    # @return [Hash<VcoWorkflows::WorkflowParameter>] Hash of
-    #   WorkflowParameter objects, keyed by name
+    # Workflow Output Parameters: Hash of WorkflowParameters, keyed by name
+    # @return [Hash<VcoWorkflows::WorkflowParameter>]
     attr_reader :output_parameters
 
-    # Workflow Service
-    # @return [VcoWorkflows::WorkflowService] The WorkflowService
-    #   currently being used to interface with vCO
+    # Workflow Service in use by this Workflow
+    # @return [VcoWorkflows::WorkflowService]
     attr_accessor :service
 
     # Workflow execution ID
-    # @return [String] workflow execution ID
+    # @return [String]
     attr_reader :execution_id
 
     # Workflow source JSON
-    # @return [String] the source JSON returned by vCO for this workflow
+    # @return [String]
     attr_reader :source_json
 
     # rubocop:enable LineLength
@@ -65,7 +62,15 @@ module VcoWorkflows
     # configuration file (`config_file`).
     #
     # @param [String] name Name of the requested workflow
-    # @param [Hash] options Hash of options, see README.md for details
+    # @param [Hash] options Hash of options:
+    #  - id: (String) GUID for the Workflow
+    #  - url: (String) vCO REST API URL
+    #  - username: (String) User to authenticate as
+    #  - password: (String) Password for username
+    #  - verify_ssl: (Boolean) Perform TLS/SSL certificate validation
+    #  - service: (VcoWorkflows::WorkflowService) WorkflowService to use for communicating to vCO
+    #  - config: (VcoWorkflows::Config) Configuration object to use for this workflow's session
+    #  - config_file: (String) Path to load configuration file from for this workflow's session
     # @return [VcoWorkflows::Workflow]
     def initialize(name = nil, options = {})
       @options = {
