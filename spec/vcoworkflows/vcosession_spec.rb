@@ -11,20 +11,20 @@ describe VcoWorkflows::VcoSession, 'VcoSession' do
   end
 
   it 'should set the URL' do
-    vs = VcoWorkflows::VcoSession.new(@uri, user: @username, password: @password)
+    vs = VcoWorkflows::VcoSession.new(uri: @uri, user: @username, password: @password)
     api_url = '/vco/api'
 
     expect(vs.rest_resource.url).to eql(@uri << api_url)
   end
 
   it 'should set the username' do
-    vs = VcoWorkflows::VcoSession.new(@uri, user: @username, password: @password)
+    vs = VcoWorkflows::VcoSession.new(uri: @uri, user: @username, password: @password)
 
     expect(vs.rest_resource.user).to eql(@username)
   end
 
   it 'should set the password' do
-    vs = VcoWorkflows::VcoSession.new(@uri, user: @username, password: @password)
+    vs = VcoWorkflows::VcoSession.new(uri: @uri, user: @username, password: @password)
 
     expect(vs.rest_resource.password).to eql(@password)
   end
