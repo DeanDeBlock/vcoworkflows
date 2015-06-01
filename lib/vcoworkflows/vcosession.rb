@@ -1,4 +1,5 @@
 require 'vcoworkflows/constants'
+require 'vcoworkflows/config'
 require 'rest_client'
 
 # VcoWorkflows
@@ -11,17 +12,35 @@ module VcoWorkflows
 
     # Initialize the session
     #
+    # When specifying a config, do not provide other parameters. Likewise,
+    # if providing uri, user, and password, a config object is not necessary.
+    #
+    # @param [VcoWorkflows::Config] config Configuration object for the connection
     # @param [String] uri URI for the vCenter Orchestrator API endpoint
     # @param [String] user User name for vCO
     # @param [String] password Password for vCO
     # @param [Boolean] verify_ssl Whether or not to verify SSL certificates
-    def initialize(uri, user: nil, password: nil, verify_ssl: true)
-      api_url = "#{uri.gsub(%r{\/$}, '')}/vco/api"
+    def initialize(config: nil, uri: nil, user: nil, password: nil, verify_ssl: true)
+      # If a configuration object was provided, use it.
+      # If we got a URL and no config, build a new config with the URL and any
+      # other options that passed in.
+      # Otherwise, load the default config file if possible...
+      if config
+        config = config
+      elsif uri && config.nil?
+        config = VcoWorkflows::Config.new(url:        uri,
+                                          username:   user,
+                                          password:   password,
+                                          verify_ssl: verify_ssl)
+      elsif uri.nil? && config.nil?
+        config = VcoWorkflows::Config.new()
+      end
+
       RestClient.proxy = ENV['http_proxy'] # Set a proxy if present
-      @rest_resource = RestClient::Resource.new(api_url,
-                                                user: user,
-                                                password: password,
-                                                verify_ssl: verify_ssl)
+      @rest_resource = RestClient::Resource.new(config.url,
+                                                user:       config.username,
+                                                password:   config.password,
+                                                verify_ssl: config.verify_ssl)
     end
 
     # Perform a REST GET operation against the specified endpoint
