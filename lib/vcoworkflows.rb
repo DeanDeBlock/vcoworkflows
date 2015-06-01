@@ -2,6 +2,7 @@ require 'thor'
 
 require File.dirname(__FILE__) + '/vcoworkflows/version'
 require File.dirname(__FILE__) + '/vcoworkflows/constants'
+require File.dirname(__FILE__) + '/vcoworkflows/config'
 require File.dirname(__FILE__) + '/vcoworkflows/vcosession'
 require File.dirname(__FILE__) + '/vcoworkflows/workflowservice'
 require File.dirname(__FILE__) + '/vcoworkflows/workflow'
