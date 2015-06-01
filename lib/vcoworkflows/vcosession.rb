@@ -1,4 +1,4 @@
-require_relative 'constants'
+require 'vcoworkflows/constants'
 require 'rest_client'
 
 # VcoWorkflows
