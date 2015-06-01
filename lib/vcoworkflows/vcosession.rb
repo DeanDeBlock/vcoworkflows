@@ -10,6 +10,8 @@ module VcoWorkflows
     # Accessor for rest-client object, primarily for testing purposes
     attr_reader :rest_resource
 
+    # rubocop:disable MethodLength, LineLength
+
     # Initialize the session
     #
     # When specifying a config, do not provide other parameters. Likewise,
@@ -33,7 +35,7 @@ module VcoWorkflows
                                           password:   password,
                                           verify_ssl: verify_ssl)
       elsif uri.nil? && config.nil?
-        config = VcoWorkflows::Config.new()
+        config = VcoWorkflows::Config.new
       end
 
       RestClient.proxy = ENV['http_proxy'] # Set a proxy if present
@@ -42,6 +44,7 @@ module VcoWorkflows
                                                 password:   config.password,
                                                 verify_ssl: config.verify_ssl)
     end
+    # rubocop:enable MethodLength, LineLength
 
     # Perform a REST GET operation against the specified endpoint
     #
