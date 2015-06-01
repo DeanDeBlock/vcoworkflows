@@ -4,24 +4,16 @@ require 'vcoworkflows/constants'
 module VcoWorkflows
   # Class Config
   class Config
-    # URL
-    # @param [String] url
-    # @return [String]
+    # URL for the vCenter Orchestrator REST API
     attr_accessor :url
 
-    # username
-    # @param [String] username
-    # @return [String]
+    # User name to authenticate to vCenter Orchestrator
     attr_accessor :username
 
-    # password
-    # @param [String] password
-    # @return [String]
+    # Password to authenticate to vCenter Orchestrator
     attr_accessor :password
 
-    # verify_ssl
-    # @param [Boolean] verify_ssl
-    # @return [Boolean]
+    # Whether or not to do SSL/TLS Certificate verification
     attr_accessor :verify_ssl
 
     # Constructor
@@ -70,6 +62,7 @@ module VcoWorkflows
       end
     end
 
+    # Return a String representation of this object
     # @return [String]
     def to_s
       puts "url:        #{@url}"
@@ -78,6 +71,7 @@ module VcoWorkflows
       puts "verify_ssl: #{@verify_ssl}"
     end
 
+    # Return a JSON document for this object
     def to_json
       config = {}
       config['url'] = @url
