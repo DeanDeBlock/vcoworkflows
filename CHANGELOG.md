@@ -1,6 +1,14 @@
 vcoworkflows CHANGELOG
 ================
 
+## 0.2.0
+
+- Removes `VcoWorkflows::Cli::Auth`
+- Slightly breaks the behavior of `VcoWorkflows::VcoSession` from v0.1.x; all parameters for `VcoWorkflows::VcoSession.new()` are optional now, and if none are given, an attempt to load configuration from the default configuration file (currently `${HOME}/.vcoworkflows/config.json`) will be made.
+- Added `config` and `config_file` options to `VcoWorkflows::Workflow.new`. If only name is specified, attempt to grab configuration from `${HOME}/.vcoworkflows/config.json`
+
+## 0.1.4
+
 ## 0.1.3
 
 ### Third Time's the Charm
