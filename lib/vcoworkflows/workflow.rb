@@ -60,8 +60,10 @@ module VcoWorkflows
     #
     # When passed `url`, `username` and `password` the necessary session and
     # service objects will be created behind the scenes. Alternatively you can
-    # pass in a VcoSession object or a WorkflowService object if you have
-    # constructed them yourself.
+    # pass in a Config or a WorkflowService object if you have
+    # constructed them yourself. You may also pass in the path to a
+    # configuration file (`config_file`).
+    #
     # @param [String] name Name of the requested workflow
     # @param [Hash] options Hash of options, see README.md for details
     # @return [VcoWorkflows::Workflow]
@@ -72,9 +74,12 @@ module VcoWorkflows
         username: nil,
         password: nil,
         verify_ssl: true,
-        service: nil
+        service: nil,
+        config: nil,
+        config_file: nil
       }.merge(options)
 
+      config = nil
       @service = nil
       @execution_id = nil
 
@@ -84,11 +89,29 @@ module VcoWorkflows
 
       if options[:service]
         @service = options[:service]
-      elsif @options[:url] && @options[:username] && @options[:password]
-        session = VcoWorkflows::VcoSession.new(@options[:url],
-                                               user: @options[:username],
-                                               password: @options[:password],
-                                               verify_ssl: @options[:verify_ssl])
+      else
+        # If we were given a configuration object, use it
+        # If we were given a config file path, use it
+        # If we have a url, username and password, use them
+        # If all we have is a URL, try anyway, maybe we'll get username and
+        # password from ENV values (hey, it might work...)
+        if @options[:config]
+          config = @options[:config]
+        elsif @options[:config_file]
+          config = VcoWorkflows::Config.new(config_file: @options[:config_file])
+        elsif @options[:url] && @options[:username] && @options[:password]
+          config = VcoWorkflows::Config.new(url:        @options[:url],
+                                            username:   @options[:username],
+                                            password:   @options[:password],
+                                            verify_ssl: @options[:verify_ssl])
+        elsif @options[:url]
+          config = VcoWorkflows::Config.new(url:        @options[:url],
+                                            verify_ssl: @options[:verify_ssl])
+        end
+
+        # If we got a config object above, great. If it's still nil, VcoSession
+        # will accept that and try to load the default config file.
+        session  = VcoWorkflows::VcoSession.new(config: config)
         @service = VcoWorkflows::WorkflowService.new(session)
       end
 
