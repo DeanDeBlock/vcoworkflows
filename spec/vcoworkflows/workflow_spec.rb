@@ -30,9 +30,42 @@ describe VcoWorkflows::Workflow, 'Workflow' do
 
     # Mock the WorkflowService
     @service = double('service')
-    allow(@service).to receive(:get_workflow_for_id) { @workflow_json }
-    allow(@service).to receive(:get_workflow_for_name) { @workflow_json }
-    allow(@service).to receive(:get_presentation) { @presentation_json }
+    allow(@service).to receive(:get_workflow_for_id).and_return(@workflow_json)
+    allow(@service).to receive(:get_workflow_for_name).and_return(@workflow_json)
+    allow(@service).to receive(:get_presentation).and_return(@presentation_json)
+
+    # Config object, file, data for constructor testing
+    @config_file = '/tmp/vcoconfig.json'
+    @config_data = {
+      url: @url,
+      username: @username,
+      password: @password
+    }.to_json
+    @config = VcoWorkflows::Config.new(url: 'https://vcoserver.example.com:8281/vco/api',
+                                       username: 'johndoe',
+                                       password: 's3cre3t')
+    allow(VcoWorkflows::VcoSession).to receive(:new).and_return(true)
+    allow(VcoWorkflows::WorkflowService).to receive(:new).and_return(@service)
+    allow(File).to receive(:read).and_call_original
+    allow(File).to receive(:read).with(@config_file).and_return(@config_data)
+  end
+
+  it 'should not explode when created with service' do
+    wf = VcoWorkflows::Workflow.new(@workflow_name, service: @service)
+
+    expect(wf).to_not eq(nil)
+  end
+
+  it 'should not explode when created with config' do
+    wf = VcoWorkflows::Workflow.new(@workflow_name, config: @config)
+
+    expect(wf).to_not eq(nil)
+  end
+
+  it 'should not explode when created with config_file' do
+    wf = VcoWorkflows::Workflow.new(@workflow_name)
+
+    expect(wf).to_not eq(nil)
   end
 
   it 'should parse a single string parameter' do
@@ -77,12 +110,6 @@ describe VcoWorkflows::Workflow, 'Workflow' do
     expect(wfparams['arrayparam'].type).to eql('Array')
     expect(wfparams['arrayparam'].subtype).to eql('string')
     expect(wfparams['arrayparam'].value).to eql(%w(a b c))
-  end
-
-  it 'should not explode' do
-    wf = VcoWorkflows::Workflow.new(@workflow_name, service: @service)
-
-    expect(wf).to_not eq(nil)
   end
 
   it 'should have input and output parameters' do
