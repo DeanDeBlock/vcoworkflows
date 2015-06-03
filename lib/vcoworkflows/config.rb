@@ -1,11 +1,12 @@
 require 'vcoworkflows/constants'
+require 'uri'
 
 # VcoWorkflows
 module VcoWorkflows
   # Class Config
   class Config
     # URL for the vCenter Orchestrator REST API
-    attr_accessor :url
+    attr_reader :url
 
     # User name to authenticate to vCenter Orchestrator
     attr_accessor :username
@@ -31,7 +32,7 @@ module VcoWorkflows
       # Otherwise, load the given config file or the default config file if no
       # config file was given.
       if url && config_file.nil?
-        @url        = url
+        self.url    = url
         @username   = username.nil? ? ENV['VCO_USER'] : username
         @password   = password.nil? ? ENV['VCO_PASSWD'] : password
         @verify_ssl = verify_ssl
@@ -41,9 +42,6 @@ module VcoWorkflows
         load_config(config_file)
       end
 
-      # If the uri didn't specify the /vco/api path, add it...
-      @url.gsub!(%r{\/$}, '/vco/api') unless @url.match(%r{/vco/api$})
-
       # Fail if we don't have both a username and a password.
       fail(IOError, ERR[:url_unset]) if @url.nil?
       fail(IOError, ERR[:username_unset]) if @username.nil?
@@ -51,12 +49,23 @@ module VcoWorkflows
     end
     # rubocop:enable LineLength, MethodLength, CyclomaticComplexity, PerceivedComplexity
 
+    # rubocop:disable LineLength
+
+    # Set the URL for the vCO server, force the path component.
+    # @param [String] vco_url
+    def url=(vco_url)
+      url = URI.parse(vco_url)
+      url.path = '/vco/api'
+      @url = url.to_s
+    end
+    # rubocop:enable LineLength
+
     # load config file
     # @param [String] config_file Path for the configuration file to load
     def load_config(config_file)
       config_data = JSON.parse(File.read(config_file))
       return if config_data.nil?
-      @url        = config_data['url']
+      self.url    = config_data['url']
       @username   = config_data['username']
       @password   = config_data['password']
       @verify_ssl = config_data['verify_ssl']
