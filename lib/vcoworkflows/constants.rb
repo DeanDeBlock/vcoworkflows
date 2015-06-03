@@ -2,9 +2,12 @@
 module VcoWorkflows
   # rubocop:disable LineLength
 
-  # Defaults
+  #
   class Config
+    # Where we nominally expect configuration files to be
     DEFAULT_CONFIG_DIR  = File.join((ENV['HOME'] || ENV['HOMEDRIVE']), '.vcoworkflows')
+
+    # Default configuration file
     DEFAULT_CONFIG_FILE = File.join(DEFAULT_CONFIG_DIR, 'config.json')
   end
 
