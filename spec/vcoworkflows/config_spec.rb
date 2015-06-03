@@ -3,7 +3,7 @@ require 'vcoworkflows'
 
 # rubocop:disable LineLength
 
-describe VcoWorkflows::VcoSession, 'VcoSession' do
+describe VcoWorkflows::Config, 'Config' do
   before(:each) do
     @url = 'https://vcoserver.example.com:8281/vco/api'
     @username = 'johndoe'
