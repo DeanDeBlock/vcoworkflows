@@ -1,5 +1,4 @@
 require 'vcoworkflows'
-require_relative 'auth'
 require 'thor/group'
 
 # rubocop:disable MethodLength, LineLength
@@ -31,7 +30,10 @@ module VcoWorkflows
 
       # rubocop:disable CyclomaticComplexity, PerceivedComplexity
       def execute
-        auth = VcoWorkflows::Cli::Auth.new(username: options[:username], password: options[:password])
+        config = VcoWorkflows::Config.new(url:        options[:server],
+                                          username:   options[:username],
+                                          password:   options[:password],
+                                          verify_ssl: options[:verify_ssl])
 
         # Parse out the parameters
         parameters = {}
@@ -60,11 +62,8 @@ module VcoWorkflows
         # Get the workflow
         puts "Retrieving workflow '#{workflow}' ..."
         wf = VcoWorkflows::Workflow.new(workflow,
-                                        url: options[:server],
-                                        username: auth.username,
-                                        password: auth.password,
-                                        verify_ssl: options[:verify_ssl],
-                                        id: options[:id])
+                                        id:     options[:id],
+                                        config: config)
 
         # List out mandatory parameters
         puts "Required parameters:\n #{wf.required_parameters.keys.join(', ')}"
