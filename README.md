@@ -59,17 +59,90 @@ Quick example:
 ```ruby
 require 'vcoworkflows'
 workflow = VcoWorkflows::Workflow.new(
-    'Request Component',
-    url: 'https://vco.example.com:8281/',
-    username: 'jdoe',
-    password: 's3cr3t'
+  'Request Component',
+  url: 'https://vco.example.com:8281/',
+  username: 'jdoe',
+  password: 's3cr3t'
 )
-
 ```
 
 All the necessary interactions with a Workflow in vCenter Orchestrator are
 available via the [`VcoWorkflows::Workflow`](lib/vcoworkflows/Workflow.rb)
 class.
+
+### Configuration
+
+#### Configuration File
+
+The configuration file format is a simple JSON document with the following keys:
+
+- `url` - (*Required*) The vCO server URL (i.e., 'https://vco.example.com:8281/')
+- `username` - (*Optional*) User to authenticate as. Likely in the form 
+    `DOMAIN\\username` (be sure to escape backslashes). If not present, this can
+    be provided via the command-line parameter `--username` or by setting
+    `$VCO_USER` in the environment.
+- `password` - (*Optional*) Password to authenticate with. If not present, this
+    can be provided via the command-line parameter `--password` or by setting
+    `$VCO_PASSWD` in the environment.
+- `verify_ssl` - (*Optional*) Whether to perform TLS/SSL certificate validation.
+    Defaults to `true`.
+    
+An example configuration file, then, would look like:
+
+```json
+{
+  "verify_ssl": true,
+  "password": "s3cr3t",
+  "username": "EXAMPLE\\jdoe",
+  "url": "https://vco.example.com:8281/"
+}
+```
+    
+If `url`, `username` and `password` are not provided when created a new
+`Workflow` object, `VcoWorkflows` will look for a configuration file at:
+
+```shell
+${HOME}/.vcoworkflows/config.json
+```
+    
+Alternately, you can specify a different configuration file when constructing
+the `Workflow` object:
+
+```ruby
+workflow = VcoWorkflows::Workflow.new(
+  'My Workflow',
+  config_file: '/tmp/vcoworkflow.json`
+)
+```
+
+#### `VcoWorkflows::Config` class
+
+For additional control, you can create a `VcoWorkflows::Config` object and
+hand that to the `Workflow` constructor. If you provide no parameters, it will
+attempt to load the default configuration file, as above:
+
+```ruby
+config = VcoWorkflows::Config.new
+workflow = VcoWorkflows::Workflow.new('My Workflow', config: config)
+```
+
+You can also specify a non-default configuration file:
+
+```ruby
+config = VcoWorkflows::Config.new(config_file: '/tmp/myconfig.json')
+```
+
+And, of course, you can set all the required parameters yourself if you don't
+want or need to use a configuration file:
+
+```ruby
+config = VcoWorkflows::Config.new(
+  url: 'https://vco.example.com:8281/',
+  username: 'jdoe',
+  password: 's3cr3t'
+)
+workflow = VcoWorkflows::Workflow.new('My Workflow', config: config)
+```
 
 ### Selecting a Workflow
 
@@ -84,11 +157,11 @@ creating a new `Workflow` object:
 
 ```ruby
 workflow = VcoWorkflows::Workflow.new(
-    'Request Component',
-    id: '6e04a460-4a45-4e16-9603-db2922c24462',
-    url: 'https://vco.example.com:8281/',
-    username: 'jdoe',
-    password: 's3cr3t'
+  'My Workflow',
+  id: '6e04a460-4a45-4e16-9603-db2922c24462',
+  url: 'https://vco.example.com:8281/',
+  username: 'jdoe',
+  password: 's3cr3t'
 )
 ```
 

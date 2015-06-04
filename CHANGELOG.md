@@ -1,6 +1,10 @@
 vcoworkflows CHANGELOG
 ================
 
+## 0.2.1
+
+- Update README with configuration file instructions
+
 ## 0.2.0
 
 - Removes `VcoWorkflows::Cli::Auth`
